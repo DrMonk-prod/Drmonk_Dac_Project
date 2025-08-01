@@ -14,7 +14,7 @@ public class User extends BaseEntity{
   @Column(name = "full_name", nullable = false)
   private String fullName;
 
-  @Column(name = "email", unique = true, nullable = false)
+  @Column(unique = true, nullable = false)
   private String email;
 
   @Column(name = "phone_number", unique = true, length = 10)
@@ -24,6 +24,9 @@ public class User extends BaseEntity{
   private String passwordHash;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "role", nullable = false)
+  @Column(nullable = false)
   private Role role;
+
+  @Column(name = "is_active")
+  private boolean isActive=true;
 }
