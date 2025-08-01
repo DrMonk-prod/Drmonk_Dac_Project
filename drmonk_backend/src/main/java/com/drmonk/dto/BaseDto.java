@@ -1,15 +1,14 @@
 package com.drmonk.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class BaseDto {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private Long id;
