@@ -1,7 +1,9 @@
-package com.drmonk.dto;
+package com.findDr.dto;
 
+import com.findDr.entity.type.RoleType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -19,6 +21,9 @@ public class RegisterRequestDto {
   @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
   private String phoneNumber;
 
-  @Size(min = 8, message = "Password must be at least 8 characters long")
+  @Size(min = 8,max=30, message = "Password must be at least 8 characters long")
   private String password;
+
+  @NotNull
+  private RoleType role;
 }

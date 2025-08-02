@@ -1,5 +1,6 @@
-package com.drmonk.entity;
+package com.findDr.entity;
 
+import com.findDr.entity.type.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class User extends BaseEntity{
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private Role role;
+  private RoleType role;
 
   @Column(name = "is_active")
   private boolean isActive=true;

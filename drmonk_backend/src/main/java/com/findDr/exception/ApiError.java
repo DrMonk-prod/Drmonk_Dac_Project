@@ -1,4 +1,4 @@
-package com.drmonk.exception;
+package com.findDr.exception;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

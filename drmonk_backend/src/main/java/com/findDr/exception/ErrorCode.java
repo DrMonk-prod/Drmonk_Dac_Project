@@ -1,8 +1,9 @@
-package com.drmonk.exception;
+package com.findDr.exception;
 
 public enum ErrorCode {
   // User/Auth
   USER_NOT_FOUND,
+  USER_ALREADY_EXIST,
   INVALID_CREDENTIALS,
   UNAUTHORIZED_ACCESS,
   FORBIDDEN_ACTION,
@@ -29,7 +30,6 @@ public enum ErrorCode {
   // Generic
   INTERNAL_ERROR,
   VALIDATION_ERROR,
-  RATE_LIMIT_EXCEEDED,
   RESOURCE_CONFLICT,
   SERVICE_UNAVAILABLE
 }

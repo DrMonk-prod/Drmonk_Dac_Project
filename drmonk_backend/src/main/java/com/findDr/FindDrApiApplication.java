@@ -1,11 +1,13 @@
-package com.drmonk;
+package com.findDr;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-public class DrMonkApiApplication {
+@EnableJpaAuditing
+public class FindDrApiApplication {
 
   // Load environment variables from .env file
   static {
@@ -16,7 +18,7 @@ public class DrMonkApiApplication {
   }
 
   public static void main(String[] args) {
-    SpringApplication.run(DrMonkApiApplication.class, args);
+    SpringApplication.run(FindDrApiApplication.class, args);
   }
 
 }
