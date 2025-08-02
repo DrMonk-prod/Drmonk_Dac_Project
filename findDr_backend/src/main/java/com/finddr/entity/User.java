@@ -12,10 +12,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity {
-  @Column(name = "full_name", nullable = false)
+  @Column(name = "full_name", nullable = false, length = 50)
   private String fullName;
 
-  @Column(unique = true, nullable = false)
+  @Column(unique = true, nullable = false, length = 50)
   private String email;
 
   @Column(name = "phone_number", unique = true, length = 10)
