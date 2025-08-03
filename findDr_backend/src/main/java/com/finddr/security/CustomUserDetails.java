@@ -9,9 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Set;
 
+
 @Getter
 public class CustomUserDetails implements UserDetails {
-  private final User user;
+private final User user;
 
   public CustomUserDetails(User user) {
     this.user = user;
