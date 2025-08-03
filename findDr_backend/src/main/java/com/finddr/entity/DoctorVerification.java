@@ -1,5 +1,6 @@
 package com.finddr.entity;
 
+import com.finddr.entity.type.VerificationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,10 @@ public class DoctorVerification extends BaseEntity {
     @NotBlank(message = "Registration Council must not be blank")
     @Size(max = 100, message = "Registration Council must be at most 100 characters")
     private String registrationCouncil;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "verification_status")
+    private VerificationStatus verificationStatus = VerificationStatus.PENDING;
 
     @Column(name = "verified_at")
     @PastOrPresent(message = "Verification time must be in the past or present")
