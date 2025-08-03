@@ -1,36 +1,34 @@
 package com.finddr.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
+@Data
 @Entity
-@Table(name = "cities")
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "cities", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "state"})
+})
 public class City {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
 
-	@NotBlank(message = "Name is required")
-	public String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@NotNull(message = "Latitude is required")
-	public Double latitude;
+  @NotBlank(message = "City name is required")
+  @Column(nullable = false)
+  private String name;
 
-	@NotNull(message = "Longitude is required")
-	public Double longitude;
+  @NotBlank(message = "State is required")
+  @Column(nullable = false)
+  private String state;
+
+  @NotNull(message = "Latitude is required")
+  @Column(nullable = false)
+  private Double latitude;
+
+  @NotNull(message = "Longitude is required")
+  @Column(nullable = false)
+  private Double longitude;
 }
