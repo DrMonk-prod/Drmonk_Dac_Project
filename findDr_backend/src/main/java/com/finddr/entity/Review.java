@@ -1,45 +1,42 @@
 package com.finddr.entity;
 
-//import jakarta.persistence.*;
-//import jakarta.validation.constraints.*;
-//
-//import java.time.LocalDateTime;
-//
-//@Entity
-//@Table(name = "reviews")
-//public class Review {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @OneToOne(optional = false)
-//    @JoinColumn(name = "appointment_id", nullable = false)
-//    private Appointment appointment;
-//
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "patient_id", nullable = false)
-//    private User patient;
-//
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "doctor_id", nullable = false)
-//    private Doctor doctor;
-//
-//    @Min(value = 1, message = "Rating must be at least 1")
-//    @Max(value = 5, message = "Rating must be at most 5")
-//    private int rating;
-//
-//    @Size(max = 1000, message = "Comment cannot exceed 1000 characters")
-//    private String comment;
-//
-//    private LocalDateTime createdAt;
-//
-//    @PrePersist
-//    protected void onCreate() {
-//        this.createdAt = LocalDateTime.now();
-//    }
-//}
-//
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Check;
 
-public class Review {
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@Entity
+@Table(name = "reviews")
+public class Review extends BaseEntity {
+
+  @NotNull
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "appointment_id", nullable = false, unique = true)
+  private Appointment appointment;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "patient_id", nullable = false)
+  private User patient;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "doctor_id", nullable = false)
+  private Doctor doctor;
+
+  @NotNull(message = "Rating is required")
+  @Min(value = 1, message = "Rating must be at least 1")
+  @Max(value = 5, message = "Rating must be at most 5")
+  @Check(constraints = "rating >= 1 AND rating <= 5")
+  private int rating;
+
+  @Size(max = 1000, message = "Comment cannot exceed 1000 characters")
+  @Column(name = "comment", length = 500)
+  private String comment;
 }

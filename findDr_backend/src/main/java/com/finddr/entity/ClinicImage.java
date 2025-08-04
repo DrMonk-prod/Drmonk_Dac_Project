@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
