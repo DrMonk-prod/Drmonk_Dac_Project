@@ -1,4 +1,9 @@
 package com.finddr.service;
 
-public class PatientService {
+import com.finddr.dto.UserDto;
+
+import java.util.List;
+
+public interface PatientService {
+  List<UserDto> getAllPatients();
 }

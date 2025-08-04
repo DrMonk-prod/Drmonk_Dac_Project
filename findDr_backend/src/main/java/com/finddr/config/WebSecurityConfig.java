@@ -24,6 +24,8 @@ public class WebSecurityConfig {
                     sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/public/**", "/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+//                            .requestMatchers(HttpMethod.GET, "/patient/**").permitAll()
+                            .requestMatchers("/**").permitAll()
 //                    .requestMatchers("/admin/**").hasRole(ADMIN.name())
 //                    .requestMatchers("/doctors/**").hasAnyRole(DOCTOR.name(), ADMIN.name())
                             .anyRequest().authenticated()
