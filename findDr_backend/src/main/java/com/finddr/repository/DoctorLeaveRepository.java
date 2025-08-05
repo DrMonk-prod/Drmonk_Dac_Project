@@ -1,0 +1,13 @@
+package com.finddr.repository;
+
+import com.finddr.entity.DoctorLeave;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface DoctorLeaveRepository extends JpaRepository<DoctorLeave, Long> {
+
+  @Query("SELECT COUNT(l)>0 FROM DoctorLeave l WHERE l.doctor.id = :doctorId AND :appointmentTime BETWEEN l.startDate AND l.endDate")
+  boolean isDoctorOnLeave(Long doctorId, java.time.LocalDateTime appointmentTime);
+}
