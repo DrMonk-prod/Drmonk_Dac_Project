@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 public class DoctorVerification extends BaseEntity {
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "doctor_id", nullable = false)
-    @NotNull(message = "Doctor must not be null")
-    private Doctor doctor;
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull(message = "User must not be null")
+    private User user;
 
     @Column(name = "degree", length = 100)
     @NotBlank(message = "Degree must not be blank")
