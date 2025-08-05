@@ -1,9 +1,9 @@
 package com.finddr.service;
 
-import com.finddr.dto.ClinicSummaryDto;
-import com.finddr.dto.DoctorRequestDto;
-import com.finddr.dto.DoctorResponseDto;
-import com.finddr.dto.SpecialitySummaryDto;
+import com.finddr.dto.Clinic.ClinicInfo;
+import com.finddr.dto.Doctor.DoctorRequestDto;
+import com.finddr.dto.Doctor.DoctorResponseDto;
+import com.finddr.dto.SpecialityDto;
 import com.finddr.entity.Clinic;
 import com.finddr.entity.Doctor;
 import com.finddr.entity.Speciality;
@@ -87,7 +87,7 @@ public class DoctorServiceImpl {
         // Speciality
         Speciality speciality = doctor.getSpeciality();
         if (speciality != null) {
-            SpecialitySummaryDto specialityDto = new SpecialitySummaryDto();
+            SpecialityDto specialityDto = new SpecialityDto();
             specialityDto.setId(speciality.getId());
             specialityDto.setName(speciality.getName());
             dto.setSpeciality(specialityDto);
@@ -96,7 +96,7 @@ public class DoctorServiceImpl {
         // Clinic
         Clinic clinic = doctor.getClinic();
         if (clinic != null) {
-            ClinicSummaryDto clinicDto = new ClinicSummaryDto();
+            ClinicInfo clinicDto = new ClinicInfo();
             clinicDto.setId(clinic.getId());
             clinicDto.setName(clinic.getName());
             clinicDto.setAddress(clinic.getAddress());

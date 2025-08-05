@@ -1,12 +1,14 @@
 package com.finddr.controller;
 
-import com.finddr.dto.AppointmentDto;
-import com.finddr.dto.SuccessResponse;
-import com.finddr.dto.UserDto;
+import com.finddr.dto.Appointment.AppointmentDto;
+import com.finddr.dto.ApiResponse;
+import com.finddr.dto.User.UserDto;
+import com.finddr.security.CustomUserDetails;
 import com.finddr.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +20,10 @@ public class PatientController {
   private final PatientService patientService;
 
   // ------------------- PATIENT ROLE -------------------
-
-  @GetMapping("/me/appointments")
+  @GetMapping("/appointments")
   @PreAuthorize("hasRole('PATIENT')")
-  public ResponseEntity<List<AppointmentDto>> getMyAppointments() {
-    return ResponseEntity.ok(patientService.getMyAppointments());
+  public ResponseEntity<List<AppointmentDto>> getMyAppointments(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    return ResponseEntity.ok(patientService.getMyAppointments(userDetails));
   }
 
 //  @DeleteMapping("/me/appointments/{id}")
@@ -49,9 +50,9 @@ public class PatientController {
 
   @DeleteMapping("/{id}")
 //  @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<SuccessResponse<Void>> deletePatient(@PathVariable Long id) {
+  public ResponseEntity<ApiResponse<Void>> deletePatient(@PathVariable Long id) {
     patientService.deletePatient(id);
-    return ResponseEntity.ok(SuccessResponse.deleted("Patient deleted successfully with id: " + id));
+    return ResponseEntity.ok(ApiResponse.send("Patient deleted successfully with id: " + id));
   }
 
 }

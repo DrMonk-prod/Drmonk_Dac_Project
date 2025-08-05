@@ -1,9 +1,9 @@
 package com.finddr.entity;
 
-import com.finddr.entity.type.DayOfWeek;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Data

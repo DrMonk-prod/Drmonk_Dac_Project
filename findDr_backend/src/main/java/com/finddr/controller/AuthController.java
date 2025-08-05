@@ -1,9 +1,9 @@
 package com.finddr.controller;
 
 import com.finddr.dto.AuthResponseDto;
-import com.finddr.dto.LoginRequestDto;
-import com.finddr.dto.RegisterRequestDto;
-import com.finddr.dto.RegisterResponseDto;
+import com.finddr.dto.User.LoginRequestDto;
+import com.finddr.dto.User.RegisterRequestDto;
+import com.finddr.dto.User.RegisterResponseDto;
 import com.finddr.security.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

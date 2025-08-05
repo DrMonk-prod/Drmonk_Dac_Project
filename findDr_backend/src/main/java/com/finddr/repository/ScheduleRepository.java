@@ -2,9 +2,9 @@ package com.finddr.repository;
 
 
 import com.finddr.entity.DoctorSchedule;
-import com.finddr.entity.type.DayOfWeek;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Optional;
 
