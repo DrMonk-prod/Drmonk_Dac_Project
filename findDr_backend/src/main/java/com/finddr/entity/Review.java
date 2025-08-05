@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Check;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "reviews")
 public class Review extends BaseEntity {

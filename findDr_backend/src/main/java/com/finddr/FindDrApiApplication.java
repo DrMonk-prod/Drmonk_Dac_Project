@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 public class FindDrApiApplication {
-
+  
   static {
     Dotenv dotenv = Dotenv.load();
     dotenv.entries().forEach(entry ->

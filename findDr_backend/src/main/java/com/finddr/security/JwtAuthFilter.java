@@ -57,6 +57,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       }
       userId = authUtil.getUserId(token);
 
+
+
       // 3. Authenticate if not already
       if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
         User user = userDao.findById(userId)
@@ -66,9 +68,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           throw new ApiException(ErrorCode.USER_INACTIVE, "User is inactive", HttpStatus.UNAUTHORIZED);
         }
 
+        System.out.println("User: " + user);
+
         CustomUserDetails userDetails = new CustomUserDetails(user);
         UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }

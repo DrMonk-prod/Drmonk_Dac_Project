@@ -40,7 +40,7 @@ public class AuthService {
   public RegisterResponseDto signup(RegisterRequestDto registerRequestDto) {
     String email = registerRequestDto.getEmail().trim().toLowerCase();
 
-    if (userDao.findByEmailAndIsActiveTrue(email).isPresent()) {
+    if (userDao.findByEmail(email).isPresent()) {
       throw new ApiException(
               ErrorCode.USER_ALREADY_EXIST,
               "Email already taken. Please try another email.",

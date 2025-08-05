@@ -23,7 +23,6 @@
     </properties>
 
     <dependencies>
-
         <!-- Core Web Support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -131,6 +130,12 @@
             <version>5.2.2</version>
         </dependency>
 
+        <!--  Aws S3 -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.25.14</version>
+        </dependency>
     </dependencies>
 
     <build>
