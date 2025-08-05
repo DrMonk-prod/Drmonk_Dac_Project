@@ -3,15 +3,19 @@ package com.finddr.entity;
 import com.finddr.entity.type.GenderType;
 import com.finddr.entity.type.RoleType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @ToString(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
+@SQLRestriction("is_active = true")
+@SQLDelete(sql = "UPDATE user SET is_active = false WHERE id = ?")
 public class User extends BaseEntity {
   @Column(name = "full_name", nullable = false, length = 50)
   private String fullName;

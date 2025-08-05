@@ -23,12 +23,13 @@ public class WebSecurityConfig {
             .sessionManagement(sessionConfig ->
                     sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/public/**", "/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-//                            .requestMatchers(HttpMethod.GET, "/patient/**").permitAll()
-                            .requestMatchers("/**").permitAll()
-//                    .requestMatchers("/admin/**").hasRole(ADMIN.name())
-//                    .requestMatchers("/doctors/**").hasAnyRole(DOCTOR.name(), ADMIN.name())
-                            .anyRequest().authenticated()
+                    .requestMatchers("/public/**", "/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                    .requestMatchers("/me/**").authenticated()
+                    //.requestMatchers(HttpMethod.GET, "/patient/**").permitAll()
+                    .requestMatchers("/**").permitAll()
+                    //.requestMatchers("/admin/**").hasRole(ADMIN.name())
+                    //.requestMatchers("/doctors/**").hasAnyRole(DOCTOR.name(), ADMIN.name())
+                    .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(exceptionHandlingConfigurer ->
