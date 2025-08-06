@@ -1,7 +1,9 @@
 package com.finddr.controller;
 
 import com.finddr.dto.ApiResponse;
-import com.finddr.dto.Appointment.BookAppointmentDto;
+import com.finddr.dto.appointment.AppointmentCancellationDto;
+import com.finddr.dto.appointment.AppointmentDto;
+import com.finddr.dto.appointment.BookAppointmentDto;
 import com.finddr.security.CustomUserDetails;
 import com.finddr.service.AppointmentService;
 import jakarta.validation.Valid;
@@ -9,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -23,7 +22,19 @@ public class AppointmentController {
 
   @PostMapping("/book")
   //  @PreAuthorize("hasRole('PATIENT')")
-  public ResponseEntity<ApiResponse<String>> bookAppointment(@AuthenticationPrincipal CustomUserDetails userDetails,@Valid @RequestBody BookAppointmentDto bookAppointmentDto) {
-    return ResponseEntity.ok(appointmentService.bookAppointment(userDetails, bookAppointmentDto));
+  public ResponseEntity<ApiResponse<AppointmentDto>> initiateAppointment(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody BookAppointmentDto bookAppointmentDto) {
+    return ResponseEntity.ok(appointmentService.initiateAppointment(userDetails, bookAppointmentDto));
+  }
+
+  @PostMapping("/${id}/confirm-payment")
+  public ResponseEntity<ApiResponse<AppointmentDto>> confirmAppointmentPayment(@PathVariable Long id) {
+    return ResponseEntity.ok(appointmentService.confirmAppointmentPayment(id));
+  }
+
+  @DeleteMapping("/me/appointments/{id}")
+  @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
+  public ResponseEntity<ApiResponse<String>> cancelAppointment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id,@Valid @RequestBody AppointmentCancellationDto appointmentCancellationDto) {
+    appointmentService.cancelAppointment(id,userDetails,appointmentCancellationDto);
+    return ResponseEntity.ok(ApiResponse.send("Appointment cancelled successfully with id: " + id));
   }
 }

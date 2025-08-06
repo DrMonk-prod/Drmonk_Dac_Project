@@ -1,4 +1,4 @@
-package com.finddr.dto.User;
+package com.finddr.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,9 +1,9 @@
 package com.finddr.security;
 
 import com.finddr.dto.AuthResponseDto;
-import com.finddr.dto.User.LoginRequestDto;
-import com.finddr.dto.User.RegisterRequestDto;
-import com.finddr.dto.User.RegisterResponseDto;
+import com.finddr.dto.user.LoginRequestDto;
+import com.finddr.dto.user.RegisterRequestDto;
+import com.finddr.dto.user.RegisterResponseDto;
 import com.finddr.entity.User;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;

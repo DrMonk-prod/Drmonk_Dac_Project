@@ -1,4 +1,4 @@
-package com.finddr.dto.Doctor;
+package com.finddr.dto.doctor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.finddr.dto.BaseDto;

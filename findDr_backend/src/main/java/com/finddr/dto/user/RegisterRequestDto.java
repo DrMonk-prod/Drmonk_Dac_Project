@@ -1,4 +1,4 @@
-package com.finddr.dto.User;
+package com.finddr.dto.user;
 
 import com.finddr.entity.type.RoleType;
 import jakarta.validation.constraints.Email;

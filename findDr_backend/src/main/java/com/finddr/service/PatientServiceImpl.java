@@ -1,11 +1,8 @@
 package com.finddr.service;
 
-import com.finddr.dto.Appointment.AppointmentDto;
-import com.finddr.dto.Clinic.ClinicInfo;
-import com.finddr.dto.User.UserDto;
+import com.finddr.dto.appointment.AppointmentDto;
+import com.finddr.dto.user.UserDto;
 import com.finddr.entity.Appointment;
-import com.finddr.entity.Clinic;
-import com.finddr.entity.Doctor;
 import com.finddr.entity.User;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;
@@ -71,26 +68,20 @@ public class PatientServiceImpl implements PatientService {
       );
     }
 
-    List<Appointment> appointments = appointmentRepository.findAll();
+    List<Appointment> appointments = appointmentRepository.findByPatientId(userDetails.getUser().getId());
     return appointments.stream().map(appointment -> mapper.map(appointment,AppointmentDto.class)).toList();
   }
 
-
-  public AppointmentDto toAppointmentDto(Appointment appointment) {
-
-    AppointmentDto appointmentDto = mapper.map(appointment, AppointmentDto.class);
-    Doctor doctor=appointment.getDoctor();
-    Clinic clinic=appointment.getClinic();
-
-    AppointmentDto.DoctorInfo doctorInfo = new AppointmentDto.DoctorInfo();
-    ClinicInfo clinicInfo = new ClinicInfo();
-
-//    doctorInfo.setId(doctor.getId());
-//    doctorInfo.setName(doctor.getUser().getFullName());
-//    doctorInfo.setSpeciality(doctor.getSpeciality().getName());
-//    doctorInfo.setProfileImageUrl(doctor.getUser().getProfileImg());
-
-    appointmentDto.setDoctor(doctorInfo);
-    return appointmentDto;
-  }
+//  public AppointmentDto toAppointmentDto(Appointment appointment) {
+//
+//    AppointmentDto appointmentDto = mapper.map(appointment, AppointmentDto.class);
+//    Doctor doctor=appointment.getDoctor();
+//    Clinic clinic=appointment.getClinic();
+//
+//    AppointmentDto.DoctorInfo doctorInfo = new AppointmentDto.DoctorInfo();
+//    ClinicInfo clinicInfo = new ClinicInfo();
+//
+//    appointmentDto.setDoctor(doctorInfo);
+//    return appointmentDto;
+//  }
 }

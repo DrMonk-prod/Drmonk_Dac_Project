@@ -1,6 +1,6 @@
 package com.finddr.controller;
 
-import com.finddr.dto.Doctor.DoctorScheduleDto;
+import com.finddr.dto.doctor.DoctorScheduleDto;
 import com.finddr.service.DoctorScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

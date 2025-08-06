@@ -45,4 +45,8 @@ public class Appointment extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "cancelled_by", nullable = false)
   private RoleType cancelledBy;
+
+  @Size(max = 500, message = "Cancellation reason should be at most 500 characters")
+  @Column(name = "cancellation_reason", length = 500)
+  private String cancellationReason;
 }

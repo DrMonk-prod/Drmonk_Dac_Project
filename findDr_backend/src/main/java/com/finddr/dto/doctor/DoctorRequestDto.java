@@ -1,4 +1,4 @@
-package com.finddr.dto.Doctor;
+package com.finddr.dto.doctor;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

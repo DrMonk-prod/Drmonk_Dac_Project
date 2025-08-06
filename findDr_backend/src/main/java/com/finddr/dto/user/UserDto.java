@@ -1,4 +1,4 @@
-package com.finddr.dto.User;
+package com.finddr.dto.user;
 
 import com.finddr.dto.BaseDto;
 import com.finddr.entity.type.GenderType;

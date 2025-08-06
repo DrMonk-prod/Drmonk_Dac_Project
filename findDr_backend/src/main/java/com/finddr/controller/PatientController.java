@@ -1,8 +1,8 @@
 package com.finddr.controller;
 
-import com.finddr.dto.Appointment.AppointmentDto;
+import com.finddr.dto.appointment.AppointmentDto;
 import com.finddr.dto.ApiResponse;
-import com.finddr.dto.User.UserDto;
+import com.finddr.dto.user.UserDto;
 import com.finddr.security.CustomUserDetails;
 import com.finddr.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,6 @@ public class PatientController {
   public ResponseEntity<List<AppointmentDto>> getMyAppointments(@AuthenticationPrincipal CustomUserDetails userDetails) {
     return ResponseEntity.ok(patientService.getMyAppointments(userDetails));
   }
-
-//  @DeleteMapping("/me/appointments/{id}")
-//  @PreAuthorize("hasRole('PATIENT')")
-//  public ResponseEntity<?> cancelAppointment(@PathVariable Long id) {
-//    patientService.cancelAppointment(id);
-//    return ResponseEntity.ok().build();
-//  }
 
 
   // ------------------- ADMIN/DOCTOR ROLE -------------------
