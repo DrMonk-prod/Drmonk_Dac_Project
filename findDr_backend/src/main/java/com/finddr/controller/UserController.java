@@ -1,6 +1,6 @@
 package com.finddr.controller;
 
-import com.finddr.dto.User.UserDto;
+import com.finddr.dto.user.UserDto;
 import com.finddr.security.CustomUserDetails;
 import com.finddr.service.ProfileService;
 import jakarta.validation.Valid;

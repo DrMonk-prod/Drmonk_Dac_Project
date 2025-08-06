@@ -1,4 +1,4 @@
-package com.finddr.dto;
+package com.finddr.dto.doctor;
 
 
 import com.finddr.entity.type.VerificationStatus;

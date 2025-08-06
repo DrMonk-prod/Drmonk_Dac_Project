@@ -1,8 +1,8 @@
-package com.finddr.dto.Appointment;
+package com.finddr.dto.appointment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.finddr.dto.BaseDto;
-import com.finddr.dto.Clinic.ClinicInfo;
+import com.finddr.dto.clinic.ClinicInfo;
 import com.finddr.entity.type.AppointmentStatus;
 import com.finddr.entity.type.RoleType;
 import lombok.Data;

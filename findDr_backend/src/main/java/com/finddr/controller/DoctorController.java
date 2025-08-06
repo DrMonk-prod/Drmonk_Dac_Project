@@ -1,7 +1,7 @@
 package com.finddr.controller;
 
-import com.finddr.dto.Doctor.DoctorRequestDto;
-import com.finddr.dto.Doctor.DoctorResponseDto;
+import com.finddr.dto.doctor.DoctorRequestDto;
+import com.finddr.dto.doctor.DoctorResponseDto;
 import com.finddr.service.DoctorServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

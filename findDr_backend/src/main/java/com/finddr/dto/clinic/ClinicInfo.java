@@ -1,4 +1,4 @@
-package com.finddr.dto.Clinic;
+package com.finddr.dto.clinic;
 
 import lombok.Data;
 

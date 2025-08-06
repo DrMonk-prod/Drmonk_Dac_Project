@@ -2,7 +2,7 @@ package com.finddr.entity.type;
 
 public enum AppointmentStatus {
   SCHEDULED,
-  UPCOMING,
+  PENDING,
   RESCHEDULED,
   CANCELLED,
   COMPLETED,

@@ -1,8 +1,8 @@
 package com.finddr.service;
 
-import com.finddr.dto.Clinic.ClinicInfo;
-import com.finddr.dto.Doctor.DoctorRequestDto;
-import com.finddr.dto.Doctor.DoctorResponseDto;
+import com.finddr.dto.clinic.ClinicInfo;
+import com.finddr.dto.doctor.DoctorRequestDto;
+import com.finddr.dto.doctor.DoctorResponseDto;
 import com.finddr.dto.SpecialityDto;
 import com.finddr.entity.Clinic;
 import com.finddr.entity.Doctor;

@@ -1,12 +1,15 @@
 package com.finddr.service;
 
-import com.finddr.dto.DoctorVerificationDto;
+import com.finddr.dto.doctor.DoctorVerificationDto;
 import com.finddr.dto.UpdateVerificationStatusDto;
 import com.finddr.entity.DoctorVerification;
 import com.finddr.entity.type.VerificationStatus;
+import com.finddr.exception.ApiException;
+import com.finddr.exception.ErrorCode;
 import com.finddr.repository.DoctorVerificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,43 +29,43 @@ public class DoctorVerificationService {
 
     public DoctorVerificationDto getVerificationById(Long id) {
         DoctorVerification entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Verification not found"));
+                .orElseThrow(() -> new ApiException(ErrorCode.INVALID_INPUT,"Verification not found",HttpStatus.NOT_FOUND));
         return convertToDto(entity);
     }
 
     public List<DoctorVerificationDto> getPendingVerifications() {
         return repository.findAllByVerificationStatus(VerificationStatus.PENDING)
-                .stream().map(this::convertToDto).collect(Collectors.toList());
+                .stream().map(this::convertToDto).toList();
     }
 
     public List<DoctorVerificationDto> getVerifiedVerifications() {
         return repository.findAllByVerificationStatus(VerificationStatus.VERIFIED)
-                .stream().map(this::convertToDto).collect(Collectors.toList());
+                .stream().map(this::convertToDto).toList();
     }
 
     public List<DoctorVerificationDto> getRejectedVerifications() {
         return repository.findAllByVerificationStatus(VerificationStatus.REJECTED)
-                .stream().map(this::convertToDto).collect(Collectors.toList());
+                .stream().map(this::convertToDto).toList();
     }
 
-    public DoctorVerificationDto updateVerificationStatus(Long id, UpdateVerificationStatusDto dto) {
-        DoctorVerification entity = repository.findById(id)
+    public DoctorVerificationDto updateVerificationStatus(Long doctorId, UpdateVerificationStatusDto dto) {
+        DoctorVerification doctor = repository.findById(doctorId)
                 .orElseThrow(() -> new RuntimeException("Doctor verification not found"));
 
-        if (entity.getVerificationStatus() != VerificationStatus.PENDING) {
-            throw new RuntimeException("Only pending verifications can be updated.");
+        if (doctor.getVerificationStatus() != VerificationStatus.PENDING) {
+            throw new ApiException(ErrorCode.INVALID_INPUT,"Only pending verifications can be updated.", HttpStatus.BAD_REQUEST);
         }
 
-        entity.setVerificationStatus(dto.getVerificationStatus());
+        doctor.setVerificationStatus(dto.getVerificationStatus());
 
         if (dto.getVerificationStatus() == VerificationStatus.VERIFIED) {
-            entity.setVerifiedAt(LocalDateTime.now());
+            doctor.setVerifiedAt(LocalDateTime.now());
         } else if (dto.getVerificationStatus() == VerificationStatus.REJECTED) {
-            entity.setNotes(dto.getNotes()); // optional
+            doctor.setNotes(dto.getNotes());
         }
 
-        repository.save(entity);
-        return convertToDto(entity);
+        repository.save(doctor);
+        return convertToDto(doctor);
     }
 
     private DoctorVerificationDto convertToDto(DoctorVerification entity) {

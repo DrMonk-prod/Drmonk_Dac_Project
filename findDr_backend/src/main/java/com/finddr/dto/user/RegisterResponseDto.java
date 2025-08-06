@@ -1,4 +1,4 @@
-package com.finddr.dto.User;
+package com.finddr.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

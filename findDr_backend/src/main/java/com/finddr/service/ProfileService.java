@@ -1,6 +1,6 @@
 package com.finddr.service;
 
-import com.finddr.dto.User.UserDto;
+import com.finddr.dto.user.UserDto;
 import com.finddr.entity.User;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;

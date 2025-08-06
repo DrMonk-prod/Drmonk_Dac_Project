@@ -1,7 +1,7 @@
-package com.finddr.dto.Doctor;
+package com.finddr.dto.doctor;
 
 
-import com.finddr.dto.Clinic.ClinicInfo;
+import com.finddr.dto.clinic.ClinicInfo;
 import com.finddr.dto.SpecialityDto;
 import lombok.Data;
 

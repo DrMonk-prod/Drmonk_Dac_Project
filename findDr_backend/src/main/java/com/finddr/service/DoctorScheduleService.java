@@ -1,6 +1,6 @@
 package com.finddr.service;
 
-import com.finddr.dto.Doctor.DoctorScheduleDto;
+import com.finddr.dto.doctor.DoctorScheduleDto;
 import com.finddr.entity.DoctorSchedule;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;

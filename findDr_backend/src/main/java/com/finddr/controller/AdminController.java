@@ -1,6 +1,6 @@
 package com.finddr.controller;
 
-import com.finddr.dto.DoctorVerificationDto;
+import com.finddr.dto.doctor.DoctorVerificationDto;
 import com.finddr.dto.UpdateVerificationStatusDto;
 import com.finddr.service.DoctorVerificationService;
 import jakarta.validation.Valid;

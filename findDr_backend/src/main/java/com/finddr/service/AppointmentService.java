@@ -1,9 +1,11 @@
 package com.finddr.service;
 
 import com.finddr.dto.ApiResponse;
-import com.finddr.dto.Appointment.AppointmentDto;
-import com.finddr.dto.Appointment.BookAppointmentDto;
+import com.finddr.dto.appointment.AppointmentCancellationDto;
+import com.finddr.dto.appointment.AppointmentDto;
+import com.finddr.dto.appointment.BookAppointmentDto;
 import com.finddr.entity.*;
+import com.finddr.entity.type.AppointmentStatus;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;
 import com.finddr.repository.*;
@@ -26,10 +28,9 @@ public class AppointmentService {
   private final DoctorRepository doctorRepository;
   private final DoctorScheduleRepository doctorScheduleRepository;
   private final DoctorLeaveRepository doctorLeaveRepository;
-  private final UserRepository userRepository;
   private final ModelMapper mapper;
 
-  public ApiResponse<String> bookAppointment(CustomUserDetails userDetails, BookAppointmentDto bookAppointmentDto) {
+  public ApiResponse<AppointmentDto> initiateAppointment(CustomUserDetails userDetails, BookAppointmentDto bookAppointmentDto) {
     if(userDetails == null)
       throw new ApiException(ErrorCode.USER_NOT_FOUND, "User not found", HttpStatus.UNAUTHORIZED);
 
@@ -39,20 +40,6 @@ public class AppointmentService {
                     "Doctor not found with id: " + bookAppointmentDto.getDoctorId(),
                     HttpStatus.NOT_FOUND
             ));
-
-//    Clinic clinic = clinicRepository.findById(bookAppointmentDto.getClinicId())
-//            .orElseThrow(() -> new ApiException(
-//                    ErrorCode.CLINIC_NOT_FOUND,
-//                    "Clinic not found with id: " + bookAppointmentDto.getClinicId(),
-//                    HttpStatus.NOT_FOUND
-//            ));
-
-//    User patient = userRepository.findById(patientId)
-//            .orElseThrow(() -> new ApiException(
-//                    ErrorCode.USER_NOT_FOUND,
-//                    "User not found with id: " + patientId,
-//                    HttpStatus.UNAUTHORIZED
-//            ));
 
     Clinic clinic=doctor.getClinic();
     if(clinic==null)
@@ -70,11 +57,42 @@ public class AppointmentService {
     appointment.setPatient(user);
     appointment.setDoctor(doctor);
     appointment.setClinic(clinic);
+    appointment.setStatus(AppointmentStatus.PENDING);
     appointment.setAppointmentTime(combineDateTime);
     appointment.setReasonForVisit(bookAppointmentDto.getReason());
 
     appointmentRepository.save(appointment);
-    return ApiResponse.send("Appointment booked successfully!");
+    return ApiResponse.of("Appointment booked successfully!",mapper.map(appointment, AppointmentDto.class));
+  }
+
+  public ApiResponse<AppointmentDto> confirmAppointmentPayment(Long appointmentId) {
+    Appointment appointment = appointmentRepository.findById(appointmentId)
+            .orElseThrow(() -> new ApiException(
+                    ErrorCode.APPOINTMENT_NOT_FOUND,
+                    "Appointment not found with id: " + appointmentId,
+                    HttpStatus.NOT_FOUND
+            ));
+
+    if (appointment.getStatus() == AppointmentStatus.PENDING) {
+      appointment.setStatus(AppointmentStatus.SCHEDULED);
+      appointmentRepository.save(appointment);
+      // ... Trigger confirmation notifications ...
+      // email costomer about their appointment
+    }
+
+    return ApiResponse.of("Appointment confirmed successfully!",mapper.map(appointment, AppointmentDto.class));
+  }
+
+  public void cancelAppointment(Long appointmentId, CustomUserDetails userDetails, AppointmentCancellationDto appointmentCancellationDto) {
+
+    Appointment appointment=appointmentRepository.findById(appointmentId)
+            .orElseThrow(() -> new ApiException(
+                    ErrorCode.APPOINTMENT_NOT_FOUND,
+                    "Appointment not found with id: " + appointmentId,
+                    HttpStatus.NOT_FOUND
+            ));
+    appointment.setCancelledBy(userDetails.getUser().getRole());
+    appointment.setCancellationReason(appointmentCancellationDto.getReason());
   }
 
   // validates time slot
@@ -99,7 +117,6 @@ public class AppointmentService {
     if(alreadyBooked)
       throw new ApiException(ErrorCode.INVALID_APPOINTMENT_SLOT,"Slot is already booked",HttpStatus.BAD_REQUEST);
   }
-
 }
 
 
