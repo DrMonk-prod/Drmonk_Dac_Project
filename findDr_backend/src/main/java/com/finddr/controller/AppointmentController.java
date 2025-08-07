@@ -4,6 +4,7 @@ import com.finddr.dto.ApiResponse;
 import com.finddr.dto.appointment.AppointmentCancellationDto;
 import com.finddr.dto.appointment.AppointmentDto;
 import com.finddr.dto.appointment.BookAppointmentDto;
+import com.finddr.dto.appointment.PaymentConfirmationDto;
 import com.finddr.security.CustomUserDetails;
 import com.finddr.service.AppointmentService;
 import jakarta.validation.Valid;
@@ -26,15 +27,15 @@ public class AppointmentController {
     return ResponseEntity.ok(appointmentService.initiateAppointment(userDetails, bookAppointmentDto));
   }
 
-  @PostMapping("/${id}/confirm-payment")
-  public ResponseEntity<ApiResponse<AppointmentDto>> confirmAppointmentPayment(@PathVariable Long id) {
-    return ResponseEntity.ok(appointmentService.confirmAppointmentPayment(id));
+  @PostMapping("/{id}/confirm-payment")
+  public ResponseEntity<ApiResponse<AppointmentDto>> confirmAppointmentPayment(@PathVariable Long id, @RequestBody PaymentConfirmationDto paymentConfirmationDto) {
+    return ResponseEntity.ok(appointmentService.confirmAppointmentPayment(id,paymentConfirmationDto));
   }
 
-  @DeleteMapping("/me/appointments/{id}")
+  @DeleteMapping("/cancel/{id}")
   @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
   public ResponseEntity<ApiResponse<String>> cancelAppointment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id,@Valid @RequestBody AppointmentCancellationDto appointmentCancellationDto) {
-    appointmentService.cancelAppointment(id,userDetails,appointmentCancellationDto);
+    appointmentService.cancelAppointment(id,userDetails.getUser().getRole(),appointmentCancellationDto);
     return ResponseEntity.ok(ApiResponse.send("Appointment cancelled successfully with id: " + id));
   }
 }
