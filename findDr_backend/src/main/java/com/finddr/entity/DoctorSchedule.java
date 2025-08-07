@@ -2,11 +2,15 @@ package com.finddr.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Data
+@Getter
+@Setter
 @Entity
 @Table(name = "doctor_schedules", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"doctor_id", "day_of_week"})

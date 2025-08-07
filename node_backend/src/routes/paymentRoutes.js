@@ -47,7 +47,10 @@ router.post("/verify-payment", async (req, res) => {
     const confirmationUrl = `${process.env.SPRING_BOOT_URL}/appointments/${appointmentId}/confirm-payment`;
 
     // This is a server-to-server call. Add security like an API key in a real app.
-    await axios.put(confirmationUrl);
+    await axios.put(confirmationUrl, {
+      paymentId: razorpay_payment_id,
+      orderId: razorpay_order_id,
+    });
 
     console.log(
       `Successfully confirmed appointment ${appointmentId} with Spring Boot.`

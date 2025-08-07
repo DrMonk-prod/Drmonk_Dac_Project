@@ -20,8 +20,8 @@ public class AppointmentDto extends BaseDto {
   private LocalDateTime appointmentTime;
   private AppointmentStatus status;
   private String reasonForVisit;
-  private String cancellationReason;
   private RoleType cancelledBy;
+  private String cancellationReason;
 
   private DoctorInfo doctor;
   private ClinicInfo clinic;
@@ -31,6 +31,7 @@ public class AppointmentDto extends BaseDto {
     private Long id;
     @JsonProperty("name")
     private String userName;
+    private int fees;
     @JsonProperty("profileImage")
     private String userProfileImg;
     @JsonProperty("speciality")

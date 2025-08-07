@@ -4,8 +4,11 @@ import com.finddr.dto.ApiResponse;
 import com.finddr.dto.appointment.AppointmentCancellationDto;
 import com.finddr.dto.appointment.AppointmentDto;
 import com.finddr.dto.appointment.BookAppointmentDto;
+import com.finddr.dto.appointment.PaymentConfirmationDto;
 import com.finddr.entity.*;
 import com.finddr.entity.type.AppointmentStatus;
+import com.finddr.entity.type.PaymentStatus;
+import com.finddr.entity.type.RoleType;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;
 import com.finddr.repository.*;
@@ -50,22 +53,31 @@ public class AppointmentService {
       throw new ApiException(ErrorCode.USER_NOT_FOUND, "User not found", HttpStatus.UNAUTHORIZED);
 
 
-    LocalDateTime combineDateTime=LocalDateTime.of(bookAppointmentDto.getDate(), bookAppointmentDto.getTime());
-    validateTimeSlot(doctor,combineDateTime);
+    LocalDateTime combinedDateTime=LocalDateTime.of(bookAppointmentDto.getDate(), bookAppointmentDto.getTime());
+    validateTimeSlot(doctor,combinedDateTime);
 
+    // Step 1: Create and populate the payment entity first
+    Payment payment = new Payment();
+    payment.setPaymentStatus(PaymentStatus.PENDING);
+    payment.setAmount(doctor.getFees());
+
+    // Step 2: Create the appointment entity and set its other details
     Appointment appointment=new Appointment();
     appointment.setPatient(user);
     appointment.setDoctor(doctor);
     appointment.setClinic(clinic);
     appointment.setStatus(AppointmentStatus.PENDING);
-    appointment.setAppointmentTime(combineDateTime);
+    appointment.setAppointmentTime(combinedDateTime);
     appointment.setReasonForVisit(bookAppointmentDto.getReason());
+
+    // Step 3: Use the single method to set up the bidirectional relationship
+    appointment.initiatePayment(payment);
 
     appointmentRepository.save(appointment);
     return ApiResponse.of("Appointment booked successfully!",mapper.map(appointment, AppointmentDto.class));
   }
 
-  public ApiResponse<AppointmentDto> confirmAppointmentPayment(Long appointmentId) {
+  public ApiResponse<AppointmentDto> confirmAppointmentPayment(Long appointmentId, PaymentConfirmationDto paymentConfirmationDto) {
     Appointment appointment = appointmentRepository.findById(appointmentId)
             .orElseThrow(() -> new ApiException(
                     ErrorCode.APPOINTMENT_NOT_FOUND,
@@ -74,16 +86,21 @@ public class AppointmentService {
             ));
 
     if (appointment.getStatus() == AppointmentStatus.PENDING) {
+      if(paymentConfirmationDto.getPaymentId()==null){
+        appointment.getPayment().setPaymentStatus(PaymentStatus.FAILED);
+        throw new ApiException(ErrorCode.INVALID_INPUT,"Payment id is required",HttpStatus.BAD_REQUEST);
+      }
       appointment.setStatus(AppointmentStatus.SCHEDULED);
+      appointment.getPayment().setPaymentStatus(PaymentStatus.COMPLETED);
       appointmentRepository.save(appointment);
-      // ... Trigger confirmation notifications ...
       // email costomer about their appointment
+      // ... Trigger confirmation notifications ...
     }
 
     return ApiResponse.of("Appointment confirmed successfully!",mapper.map(appointment, AppointmentDto.class));
   }
 
-  public void cancelAppointment(Long appointmentId, CustomUserDetails userDetails, AppointmentCancellationDto appointmentCancellationDto) {
+  public void cancelAppointment(Long appointmentId, RoleType role, AppointmentCancellationDto appointmentCancellationDto) {
 
     Appointment appointment=appointmentRepository.findById(appointmentId)
             .orElseThrow(() -> new ApiException(
@@ -91,8 +108,20 @@ public class AppointmentService {
                     "Appointment not found with id: " + appointmentId,
                     HttpStatus.NOT_FOUND
             ));
-    appointment.setCancelledBy(userDetails.getUser().getRole());
-    appointment.setCancellationReason(appointmentCancellationDto.getReason());
+    appointment.cancel(role,appointmentCancellationDto.getReason());
+    appointmentRepository.save(appointment);
+  }
+
+  public void cancelAppointment(Long appointmentId, RoleType role,String reason) {
+
+    Appointment appointment=appointmentRepository.findById(appointmentId)
+            .orElseThrow(() -> new ApiException(
+                    ErrorCode.APPOINTMENT_NOT_FOUND,
+                    "Appointment not found with id: " + appointmentId,
+                    HttpStatus.NOT_FOUND
+            ));
+    appointment.cancel(role,reason);
+    appointmentRepository.save(appointment);
   }
 
   // validates time slot
@@ -113,7 +142,7 @@ public class AppointmentService {
       throw new ApiException(ErrorCode.INVALID_APPOINTMENT_SLOT,"Doctor is on leave",HttpStatus.BAD_REQUEST);
 
     //c. Check if slot is booked already
-    boolean alreadyBooked=appointmentRepository.existsByDoctorAndAppointmentTime(doctor,appointmentTime);
+    boolean alreadyBooked=appointmentRepository.existsByDoctorAndAppointmentTimeAndStatusNot(doctor,appointmentTime,AppointmentStatus.CANCELLED);
     if(alreadyBooked)
       throw new ApiException(ErrorCode.INVALID_APPOINTMENT_SLOT,"Slot is already booked",HttpStatus.BAD_REQUEST);
   }
