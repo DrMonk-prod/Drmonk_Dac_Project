@@ -1,9 +1,15 @@
+"use client";
+
+import { useLocation } from "react-router-dom";
+
 export default function Navbar() {
+  // const { role, setRole } = useRole();
+  const location = useLocation();
+  const isRegisterPage = location.pathname === "/register";
+
   return (
-    <header className="h-14 bg-gray-100 dark:bg-gray-900 border-b px-6 flex items-center justify-center">
-      <span className="text-xl font-bold text-gray-800 dark:text-gray-100">
-        🏥 DoctorMonk
-      </span>
-    </header>
+    <nav className="bg-white border-b shadow-sm p-4 flex justify-between items-center">
+      <h1 className="text-xl font-bold">FindDr Dashboard</h1>
+    </nav>
   );
 }
