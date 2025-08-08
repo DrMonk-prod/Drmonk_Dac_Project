@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -15,10 +16,12 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 public class WebSecurityConfig {
 
   final JwtAuthFilter jwtAuthFilter;
+  private final CorsConfigurationSource corsConfigurationSource;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, HandlerExceptionResolver handlerExceptionResolver) throws Exception {
     httpSecurity
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .csrf(csrfConfig -> csrfConfig.disable())
             .sessionManagement(sessionConfig ->
                     sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

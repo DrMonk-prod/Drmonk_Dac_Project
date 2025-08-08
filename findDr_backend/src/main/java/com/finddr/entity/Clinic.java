@@ -37,8 +37,11 @@ public class Clinic extends BaseEntity {
   private String email;
 
   @Pattern(regexp = "^(\\+91)?[6-9]\\d{9}$", message = "Invalid Indian mobile number format")
-  @Column(name = "clinic_phone_number", unique = true)
+  @Column(name = "phone_number", unique = true)
   private String phoneNumber;
+
+  @Column(name = "clinic_description",length = 600)
+  private String clinicDescription;
 
   @NotNull(message = "Latitude is required")
   @Column(nullable = false)
@@ -51,6 +54,9 @@ public class Clinic extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "city_id", nullable = false)
   private City city;
+
+  @Column(name = "image")
+  private String image;
 
   @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ClinicImage> clinicImages;
