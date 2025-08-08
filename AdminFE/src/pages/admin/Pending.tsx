@@ -1,21 +1,22 @@
-import * as React from "react"
-import type{ColumnDef,
-  ColumnFiltersState,  SortingState,VisibilityState} from "@tanstack/react-table"
+import * as React from "react";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 import {
-  
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-
   useReactTable,
+} from "@tanstack/react-table";
+import { ChevronDown, MoreHorizontal } from "lucide-react";
 
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -24,8 +25,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -33,15 +34,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 export type Doctor = {
-  id: string
-  name: string
-  speciality: string
-  city: string
-  status: "Pending" 
-}
+  id: string;
+  name: string;
+  speciality: string;
+  city: string;
+  status: "Pending";
+};
 
 const data: Doctor[] = [
   {
@@ -65,7 +66,7 @@ const data: Doctor[] = [
     city: "Bangalore",
     status: "Pending",
   },
-]
+];
 
 export const columns: ColumnDef<Doctor>[] = [
   {
@@ -127,7 +128,7 @@ export const columns: ColumnDef<Doctor>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const doctor = row.original
+      const doctor = row.original;
 
       return (
         <DropdownMenu>
@@ -149,19 +150,19 @@ export const columns: ColumnDef<Doctor>[] = [
             <DropdownMenuItem>Contact</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 export function PendingTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -180,7 +181,7 @@ export function PendingTable() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
@@ -208,9 +209,7 @@ export function PendingTable() {
                   key={column.id}
                   className="capitalize"
                   checked={column.getIsVisible()}
-                  onCheckedChange={(value) =>
-                    column.toggleVisibility(!!value)
-                  }
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
                   {column.id}
                 </DropdownMenuCheckboxItem>
@@ -291,5 +290,5 @@ export function PendingTable() {
         </div>
       </div>
     </div>
-  )
+  );
 }
