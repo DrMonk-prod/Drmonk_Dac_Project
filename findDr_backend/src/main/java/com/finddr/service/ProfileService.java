@@ -1,14 +1,19 @@
 package com.finddr.service;
 
+import com.finddr.dto.ApiResponse;
 import com.finddr.dto.user.UserDto;
+import com.finddr.dto.user.UserUpdateDto;
 import com.finddr.entity.User;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;
 import com.finddr.repository.UserRepository;
+import com.finddr.security.CustomUserDetails;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,4 +65,15 @@ public class ProfileService {
   }
 
 
+  public ApiResponse<UserDto> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid UserUpdateDto userUpdateDto) {
+    User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(() -> new ApiException(
+            ErrorCode.USER_NOT_FOUND,
+            "User not found with id: ",
+            HttpStatus.NOT_FOUND
+    ));
+
+    mapper.map(userUpdateDto, user);
+    userRepository.save(user);
+    return ApiResponse.of("User updated successfully",mapper.map(user,UserDto.class));
+  }
 }

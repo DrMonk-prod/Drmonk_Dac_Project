@@ -1,14 +1,7 @@
-"use client";
 import SearchDoctor from "@/components/SearchDoctor";
 import Image from "next/image";
-import { useState } from "react";
 
 function Hero() {
-  const [searchType, setSearchType] = useState<"doctor" | "specialty">(
-    "doctor"
-  );
-  const [location, setLocation] = useState("Pune");
-
   return (
     <section className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950/20 dark:to-indigo-950/20 py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,6 +45,7 @@ function Hero() {
           <div className="hidden lg:inline-block relative col-span-4 w-full h-full">
             <Image
               fill
+              priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               src="/background/hero.webp"
               alt="Doctor consultation"

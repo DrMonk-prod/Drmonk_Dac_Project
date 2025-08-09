@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, User } from "lucide-react";
+import Image from "next/image";
 
 function HealthArticles() {
   const articles = [
@@ -11,7 +12,7 @@ function HealthArticles() {
       author: "Dr. Sarah Johnson",
       date: "Dec 15, 2024",
       readTime: "5 min read",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/articles.svg",
       category: "Cardiology",
     },
     {
@@ -22,7 +23,7 @@ function HealthArticles() {
       author: "Dr. Michael Chen",
       date: "Dec 12, 2024",
       readTime: "8 min read",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/articles.svg",
       category: "Endocrinology",
     },
     {
@@ -33,7 +34,7 @@ function HealthArticles() {
       author: "Dr. Emily Rodriguez",
       date: "Dec 10, 2024",
       readTime: "6 min read",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/articles.svg",
       category: "Psychiatry",
     },
   ];
@@ -60,15 +61,17 @@ function HealthArticles() {
           {articles.map((article) => (
             <article
               key={article.id}
-              className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 p-2"
             >
               <div className="relative">
-                <img
-                  src={article.image || "/placeholder.svg"}
+                <Image
+                  src={article.image || "/placeholder.png"}
                   alt={article.title}
-                  className="w-full h-48 object-cover"
+                  width={0}
+                  height={0}
+                  className="w-full rounded-lg"
                 />
-                <div className="absolute top-4 left-4">
+                <div className="absolute top-4 right-2">
                   <span className="bg-blue-600 dark:bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium">
                     {article.category}
                   </span>

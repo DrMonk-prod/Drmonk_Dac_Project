@@ -1,9 +1,7 @@
 package com.finddr.service;
 
-import com.finddr.dto.clinic.ClinicInfo;
 import com.finddr.dto.doctor.DoctorRequestDto;
 import com.finddr.dto.doctor.DoctorResponseDto;
-import com.finddr.dto.SpecialityDto;
 import com.finddr.entity.Clinic;
 import com.finddr.entity.Doctor;
 import com.finddr.entity.Speciality;
@@ -14,6 +12,7 @@ import com.finddr.repository.ClinicRepository;
 import com.finddr.repository.DoctorRepository;
 import com.finddr.repository.SpecialityRepository;
 import com.finddr.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DoctorServiceImpl {
 
@@ -47,13 +47,15 @@ public class DoctorServiceImpl {
         doctor.setSpeciality(speciality);
 
         Doctor savedDoctor = doctorRepository.save(doctor);
-        return mapToDoctorResponseDto(savedDoctor);
+//      mapToDoctorResponseDto(savedDoctor)
+        return mapper.map(savedDoctor, DoctorResponseDto.class);
     }
 
     public List<DoctorResponseDto> getAllDoctors() {
         List<Doctor> doctors = doctorRepository.findAll();
+//      this::mapToDoctorResponseDto
         return doctors.stream()
-                .map(this::mapToDoctorResponseDto)
+                .map(doctor->mapper.map(doctor,DoctorResponseDto.class))
                 .toList();
     }
 
@@ -65,45 +67,48 @@ public class DoctorServiceImpl {
                         HttpStatus.NOT_FOUND
                 ));
 
-        return mapToDoctorResponseDto(doctor);
+//      mapToDoctorResponseDto(doctor)
+        return mapper.map(doctor, DoctorResponseDto.class);
     }
 
     public void deleteDoctor(Long id) {
         doctorRepository.deleteById(id);
     }
 
-    private DoctorResponseDto mapToDoctorResponseDto(Doctor doctor) {
-        DoctorResponseDto dto = new DoctorResponseDto();
+//    private DoctorResponseDto mapToDoctorResponseDto(Doctor doctor) {
+//        DoctorResponseDto dto = new DoctorResponseDto();
+//
+//        dto.setId(doctor.getId());
+//        dto.setFullName(doctor.getUser().getFullName());
+//        dto.setEmail(doctor.getUser().getEmail());
+//        dto.setPhoneNumber(doctor.getUser().getPhoneNumber());
+//        dto.setExperience(doctor.getExperience());
+//        dto.setFees(doctor.getFees());
+//        dto.setRating(doctor.getRating());
+//        dto.setPrime(doctor.isPrime());
+//        dto.setDescription(doctor.getDescription());
+//        // Speciality
+//        Speciality speciality = doctor.getSpeciality();
+//        if (speciality != null) {
+//            SpecialityDto specialityDto = new SpecialityDto();
+//            specialityDto.setId(speciality.getId());
+//            specialityDto.setName(speciality.getName());
+//            dto.setSpeciality(specialityDto);
+//        }
+//
+//        // Clinic
+//        Clinic clinic = doctor.getClinic();
+//        if (clinic != null) {
+//            ClinicInfo clinicDto = new ClinicInfo();
+//            clinicDto.setId(clinic.getId());
+//            clinicDto.setName(clinic.getName());
+//            clinicDto.setAddress(clinic.getAddress());
+//            clinicDto.setPincode(clinic.getPincode());
+//            clinicDto.setCityName(clinic.getCity().getName());
+//            dto.setClinic(clinicDto);
+//        }
+//        return dto;
+//    }
 
-        dto.setId(doctor.getId());
-        dto.setFullName(doctor.getUser().getFullName());
-        dto.setEmail(doctor.getUser().getEmail());
-        dto.setPhoneNumber(doctor.getUser().getPhoneNumber());
-        dto.setExperience(doctor.getExperience());
-        dto.setFees(doctor.getFees());
-        dto.setRating(doctor.getRating());
-        dto.setPrime(doctor.isPrime());
-        dto.setDescription(doctor.getDescription());
-        // Speciality
-        Speciality speciality = doctor.getSpeciality();
-        if (speciality != null) {
-            SpecialityDto specialityDto = new SpecialityDto();
-            specialityDto.setId(speciality.getId());
-            specialityDto.setName(speciality.getName());
-            dto.setSpeciality(specialityDto);
-        }
 
-        // Clinic
-        Clinic clinic = doctor.getClinic();
-        if (clinic != null) {
-            ClinicInfo clinicDto = new ClinicInfo();
-            clinicDto.setId(clinic.getId());
-            clinicDto.setName(clinic.getName());
-            clinicDto.setAddress(clinic.getAddress());
-            clinicDto.setPincode(clinic.getPincode());
-            clinicDto.setCityName(clinic.getCity().getName());
-            dto.setClinic(clinicDto);
-        }
-        return dto;
-    }
 }

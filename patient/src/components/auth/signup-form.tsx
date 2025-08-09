@@ -4,30 +4,49 @@ import type React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
-import { Loader2, Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User } from "lucide-react";
 import type { SignupCredentials } from "@/types/auth";
+import { register } from "@/lib/profileApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-interface SignupFormProps {
-  onSubmit: (credentials: SignupCredentials) => Promise<void>;
-  isLoading: boolean;
-}
-
-export function SignupForm({ onSubmit, isLoading }: SignupFormProps) {
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const navigate = useRouter();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    try {
+      const formData = new FormData(e.currentTarget);
 
-    const credentials: SignupCredentials = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      confirmPassword: formData.get("confirmPassword") as string,
-    };
+      const credentials: SignupCredentials = {
+        fullName: formData.get("name") as string,
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        confirmPassword: formData.get("confirmPassword") as string,
+      };
 
-    await onSubmit(credentials);
+      if (credentials.confirmPassword !== credentials.password) {
+        toast.warning("Password and confirm password are not same!!");
+        return;
+      }
+
+      await register({ ...credentials, role: "PATIENT" });
+      toast.success("Sign up successfull!!");
+      navigate.push("/auth");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    }
   };
 
   return (
@@ -79,8 +98,7 @@ export function SignupForm({ onSubmit, isLoading }: SignupFormProps) {
         className="w-full h-10 mt-2"
       />
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading && <Loader2 className="mr-2 h-10 w-4 animate-spin" />}
+      <Button type="submit" className="w-full text-gray-100">
         Create Account
       </Button>
     </form>

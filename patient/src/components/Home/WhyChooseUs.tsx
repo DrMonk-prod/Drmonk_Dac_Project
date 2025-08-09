@@ -39,7 +39,8 @@ function WhyChooseUs() {
             Why Choose DrMonk?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We're committed to providing you with the best healthcare experience
+            We&apos;re committed to providing you with the best healthcare
+            experience
           </p>
         </div>
 

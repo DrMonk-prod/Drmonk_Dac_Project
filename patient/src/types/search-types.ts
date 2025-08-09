@@ -1,33 +1,17 @@
 export interface City {
   id: number;
-  name: string;
+  value: string;
+  label: string;
   coordinates: {
     lat: number;
     lng: number;
   };
 }
 
-export type SearchEntity =
-  | {
-      type: "doctor";
-      doctor: {
-        id: number;
-        name: string;
-        speciality: string;
-        img?: string;
-      };
-    }
-  | {
-      type: "clinic";
-      clinic: {
-        id: number;
-        name: string;
-        locality: string;
-        img?: string;
-      };
-    }
-  | {
-      id: number;
-      type: "speciality";
-      speciality: string;
-    };
+export type SearchEntity = {
+  id: number;
+  type: "DOCTOR" | "SPECIALITY" | "CLINIC";
+  value: string;
+  label: string;
+  imgUrl: string;
+};

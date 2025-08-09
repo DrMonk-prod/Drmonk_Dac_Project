@@ -17,7 +17,6 @@ public class RegisterRequestDto {
   @Email(message = "Invalid email format")
   private String email;
 
-  @NotBlank(message = "Phone number is required")
   @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
   private String phoneNumber;
 

@@ -6,7 +6,6 @@ import com.finddr.entity.type.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -22,8 +21,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
   boolean existsByDoctorAndAppointmentTimeAndStatusNot(Doctor doctor, LocalDateTime appointmentTime, AppointmentStatus status);
 
   @Query("SELECT a.appointmentTime FROM Appointment a " +
-          "WHERE a.doctor.id= :doctorId AND FUNCTION('DATE', a.appointmentTime) = :date "+
-          "AND a.status IN ('PENDING','SCHEDULED')"
-  )
-  Set<LocalDateTime> findBookedTimeSlotByDoctorAndDate(Long doctorId, LocalDate date);
+          "WHERE a.doctor.id = :doctorId " +
+          "AND a.appointmentTime >= :startOfDay " +
+          "AND a.appointmentTime < :startOfNextDay " +
+          "AND a.status IN ('PENDING','SCHEDULED')")
+  Set<LocalDateTime> findBookedTimeSlotByDoctorAndDateRange(
+          Long doctorId,
+          LocalDateTime startOfDay,
+          LocalDateTime startOfNextDay
+  );
 }
