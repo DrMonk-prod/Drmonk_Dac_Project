@@ -5,7 +5,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "@/components/Home/NavBar";
 import { ThemeProvider } from "next-themes";
-// import { Provider } from "@/components/ui/provider";
+import { StoreProvider } from "../store/StoreProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Dr.monk",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const poppins = Poppins({
-  variable: "--font-poppins", // ✅ clear & correct
+  variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
 });
@@ -51,17 +52,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.variable} antialiased `}>
-        {/* <Provider> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
-          {children}
+          <Toaster richColors position="top-right" />
+          <StoreProvider>
+            <NavBar />
+            {children}
+          </StoreProvider>
         </ThemeProvider>
-        {/* </Provider> */}
       </body>
     </html>
   );

@@ -11,7 +11,10 @@ import com.finddr.entity.type.PaymentStatus;
 import com.finddr.entity.type.RoleType;
 import com.finddr.exception.ApiException;
 import com.finddr.exception.ErrorCode;
-import com.finddr.repository.*;
+import com.finddr.repository.AppointmentRepository;
+import com.finddr.repository.DoctorLeaveRepository;
+import com.finddr.repository.DoctorRepository;
+import com.finddr.repository.DoctorScheduleRepository;
 import com.finddr.security.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -130,7 +133,7 @@ public class AppointmentService {
     DayOfWeek dayOfWeek=appointmentTime.getDayOfWeek();
     LocalTime time=appointmentTime.toLocalTime();
 
-    DoctorSchedule schedule=doctorScheduleRepository.findByDoctorAndDayOfWeek(doctor,dayOfWeek)
+    DoctorSchedule schedule=doctorScheduleRepository.findByDoctorIdAndDayOfWeek(doctor.getId(),dayOfWeek)
             .orElseThrow(()->new ApiException(ErrorCode.INVALID_APPOINTMENT_SLOT,"Doctor has no schedule for this day",HttpStatus.BAD_REQUEST));
 
     if(time.isBefore(schedule.getStartTime()) || time.isAfter(schedule.getEndTime()))

@@ -1,6 +1,8 @@
 package com.finddr.controller;
 
+import com.finddr.dto.ApiResponse;
 import com.finddr.dto.user.UserDto;
+import com.finddr.dto.user.UserUpdateDto;
 import com.finddr.security.CustomUserDetails;
 import com.finddr.service.ProfileService;
 import jakarta.validation.Valid;
@@ -33,13 +35,12 @@ public class UserController {
    * PUT /api/patients/me/profile
    * Updates the profile information of the currently authenticated patient.
    *
-   * @param userDto A DTO containing the fields to be updated.
+   * @param userUpdateDto A DTO containing the fields to be updated.
    * @return The updated patient profile DTO.
    */
   @PutMapping("/profile")
-  public ResponseEntity<Void> updateMyProfile(@Valid @RequestBody UserDto userDto) {
-
-    return ResponseEntity.ok().build();
+  public ResponseEntity<ApiResponse<UserDto>> updateMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails,@Valid @RequestBody UserUpdateDto userUpdateDto) {
+    return ResponseEntity.ok(profileService.updateProfile(userDetails,userUpdateDto));
   }
 
   @PostMapping("/profile-image")

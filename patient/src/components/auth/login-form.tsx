@@ -5,31 +5,49 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
-import { Loader2, Mail, Lock } from "lucide-react";
-import type { LoginCredentials } from "@/types/auth";
+import { Mail, Lock } from "lucide-react";
+import { loginUser } from "@/lib/profileApi";
+import { toast } from "sonner";
+import { AuthUser, LoginCredentials } from "@/types/auth";
+import { useRouter } from "next/navigation";
+import { login } from "@/lib/authActions";
+import { useDispatch } from "react-redux";
 
-interface LoginFormProps {
-  onSubmit: (credentials: LoginCredentials) => Promise<void>;
-  isLoading: boolean;
-}
-
-export function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
+export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const navigate = useRouter();
 
-    const credentials: LoginCredentials = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
 
-    await onSubmit(credentials);
+      const credentials: LoginCredentials = {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+      };
+
+      const data: AuthUser = await loginUser(credentials);
+
+      if (data.role != "PATIENT") {
+        toast.warning("Doctor and Admin login not allowed");
+        navigate.push("/");
+        return;
+      }
+
+      await login(dispatch, credentials);
+      toast.success("Login successfull!");
+      navigate.push("/");
+    } catch (err) {
+      console.error(err);
+      toast.error("Invalid credentials. Try again!");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
+    <form onSubmit={handleLogin} className="flex flex-col gap-y-4">
       <FormField
         label="Email"
         id="login-email"
@@ -63,8 +81,7 @@ export function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
         </Link>
       </div>
 
-      <Button type="submit" className=" h-10" disabled={isLoading}>
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      <Button type="submit" className=" h-10">
         Sign In
       </Button>
     </form>

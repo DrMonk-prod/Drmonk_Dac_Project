@@ -1,14 +1,13 @@
-export interface User {
-  id: string;
+export interface AuthUser {
+  id: number;
+  fullName: string;
   email: string;
-  name: string;
-  emailVerified: boolean;
-}
-
-export interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
+  gender: "MEN" | "FEMALE" | "OTHER" | null;
+  phoneNumber: string;
+  role: "ADMIN" | "DOCTOR" | "PATIENT";
+  profileImg: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface LoginCredentials {
@@ -17,7 +16,7 @@ export interface LoginCredentials {
 }
 
 export interface SignupCredentials {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
   confirmPassword: string;

@@ -25,7 +25,7 @@ public class Clinic extends BaseEntity {
   private String name;
 
   @NotBlank(message = "Address is required")
-  @Column(columnDefinition = "TEXT", nullable = false)
+  @Column(nullable = false,length = 200)
   private String address;
 
   @Pattern(regexp = "^[1-9]/d{5}$", message = "Invalid Indian postal code")
@@ -40,8 +40,8 @@ public class Clinic extends BaseEntity {
   @Column(name = "phone_number", unique = true)
   private String phoneNumber;
 
-  @Column(name = "clinic_description",length = 600)
-  private String clinicDescription;
+  @Column(name = "about",length = 600)
+  private String about;
 
   @NotNull(message = "Latitude is required")
   @Column(nullable = false)
@@ -54,9 +54,6 @@ public class Clinic extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "city_id", nullable = false)
   private City city;
-
-  @Column(name = "image")
-  private String image;
 
   @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ClinicImage> clinicImages;

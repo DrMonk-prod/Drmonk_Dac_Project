@@ -1,4 +1,5 @@
 import { Quote, Star } from "lucide-react";
+import Image from "next/image";
 
 function Testimonials() {
   const testimonials = [
@@ -8,7 +9,7 @@ function Testimonials() {
       location: "Mumbai",
       rating: 5,
       text: "Excellent service! I was able to consult with a specialist within minutes. The doctor was very professional and provided great advice.",
-      avatar: "/placeholder.svg?height=60&width=60",
+      avatar: "/placeholder.png",
     },
     {
       id: 2,
@@ -16,7 +17,7 @@ function Testimonials() {
       location: "Delhi",
       rating: 5,
       text: "Dr Monk made it so easy to find the right doctor for my condition. The online consultation saved me time and money.",
-      avatar: "/placeholder.svg?height=60&width=60",
+      avatar: "/placeholder.png",
     },
     {
       id: 3,
@@ -24,7 +25,7 @@ function Testimonials() {
       location: "Bangalore",
       rating: 5,
       text: "Great platform with verified doctors. I've been using it for my family's healthcare needs and it's been fantastic.",
-      avatar: "/placeholder.svg?height=60&width=60",
+      avatar: "/placeholder.png",
     },
   ];
 
@@ -58,16 +59,17 @@ function Testimonials() {
                 </div>
               </div>
 
-              <p className="text-foreground mb-6 italic">
-                "{testimonial.text}"
-              </p>
+              <p className="text-foreground mb-6 italic">{testimonial.text}</p>
 
               <div className="flex items-center">
-                <img
-                  src={testimonial.avatar || "/placeholder.svg"}
+                <Image
+                  src={testimonial.avatar || "/placeholder.png"}
                   alt={testimonial.name}
-                  className="w-12 h-12 rounded-full mr-4"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
                 />
+
                 <div>
                   <h4 className="font-semibold text-foreground">
                     {testimonial.name}

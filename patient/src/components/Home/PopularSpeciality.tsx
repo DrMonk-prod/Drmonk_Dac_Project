@@ -9,7 +9,7 @@ import {
   Activity,
 } from "lucide-react";
 
-function PopularSpecialties() {
+function PopularSpecialities() {
   const specialties = [
     {
       name: "Cardiology",
@@ -109,4 +109,4 @@ function PopularSpecialties() {
   );
 }
 
-export default PopularSpecialties;
+export default PopularSpecialities;
